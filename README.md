@@ -1,5 +1,5 @@
 # Fusion Form Validator JS (*fusion.form.validator.js*)
->Front-end form validation (Based on jQuery 3.x, Bootstrap 5.x and Font Awesome 6.x)
+> Front-end form validation (Based on jQuery 3.x, Bootstrap 5.x and Font Awesome 6.x)
 
 ---
 
@@ -96,6 +96,7 @@ Now all you have to do is link the necessary files to your html document like th
 *Firstly, ensure the stylesheets and scripts are linked in the correct hierarchy as the example above. If you have problems getting it correctly, just copy the code in the example above and edit.*
 
 Out of the box, Fusion Form Validator ships with `init.js` file, so you can initialize, configure, and use the fusion form validator without messing up your other JS files codes.\
+
 The Validator has already been initialized in `init.js` for all forms; with default configuration out of the box
 
 ```javascript
