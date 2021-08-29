@@ -168,8 +168,6 @@ console.log(window.fusion.default_validator_config);
 - RegExp (Regular Expression) for formatting
 	- E-Mail Address - `email`
 	- Phone number - `phone`
-
-
 - Validation options for:
 	- Native HTML Validation - `nativeValidation`
 	- E-Mail Address - `validateEmail`
@@ -177,8 +175,6 @@ console.log(window.fusion.default_validator_config);
 	- Password - `validatePassword`
 	- Password field id - `passwordId`
 	- Confirm password field id - `passwordConfirmId`
-
-
 - Changing the default fontawesome icons used in the validation:
 	- exclamation - `invalid`
 	- check - `valid`
