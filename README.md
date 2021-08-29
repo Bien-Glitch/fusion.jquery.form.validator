@@ -107,8 +107,10 @@ $('form').fusionFormValidator(form_group).validateForm();
 ```
 
 Explanation of above code:
-> The first line of code - `console.log(ValidateForm.VERSION);` logs the version of the Fusion Form Validator in the browser console.\
-> The second line of code - `console.log(window.fusion.default_validator_config);` logs the default configuration of the Fusion Form Validator in the browser console as an object.\
+> The first line of code - `console.log(ValidateForm.VERSION);` logs the version of the Fusion Form Validator in the browser console.
+>
+> The second line of code - `console.log(window.fusion.default_validator_config);` logs the default configuration of the Fusion Form Validator in the browser console as an object.
+>
 > The last line of code - `$('form').fusionFormValidator(form_group).validateForm();` initializes the validator for every form element in the current document.
 
 For those used to coding in pure VanillaJS, Line 4 of the above code can be put the following way:
