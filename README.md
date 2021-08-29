@@ -88,7 +88,6 @@ Now all you have to do is link the necessary files to your html document like th
 </html>
 ```
 
-<<<<<<< Updated upstream
 > ## Note:
 > **To avoid any errors:**
 > - The *fusion.form.validator.css* must come after *bootstrap\*, bootstrap-formhelpers (optional), and fontawesome**.
@@ -96,7 +95,6 @@ Now all you have to do is link the necessary files to your html document like th
     > **Note: To avoid errors;**
 > - The `fusion.form.validator.css` must come after `bootstrap`, `bootstrap-formhelpers (optional)`, and `fontawesome`.
 > - The same goes for the `fusion.for.validator.js`, it must come after `jQuery`, `bootstrap`, and `bootstrap-formhelpers (optional)`.
->> > > > > > Stashed changes
 
 ## Usage
 *Firstly, ensure the stylesheets and scripts are linked in the correct hierarchy as the example above. If you have problems getting it correctly, just copy the code in the example above and edit.*
@@ -111,7 +109,6 @@ console.log(window.fusion.default_validator_config);
 $('form').fusionFormValidator(form_group).validateForm();
 ```
 
-\
 Explanation of above code:
 > Line 1 - `console.log(ValidateForm.VERSION);` logs the version of the Fusion Form Validator in the browser console.\
 > Line 2 - `console.log(window.fusion.default_validator_config);` logs the default configuration of the Fusion Form Validator in the browser console as an object.\
