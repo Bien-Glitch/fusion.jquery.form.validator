@@ -10,12 +10,13 @@ let valid_right,
 	fa_exc = 'fa-exclamation',
 	fa_exc_c = 'fa-exclamation-circle',
 	fa_check = 'fa-check',
+	fa_check_c = 'fa-check-circle',
 	fa_check_d = 'fa-check-double',
 	fa_info = 'fa-info',
 	fa_info_c = 'fa-info-circle',
 	
-	valid_icon = '<small id="valid" class="position-absolute text-success validation-icon"><i class="fa far fa-1x fa-check"></i></small>',
-	invalid_icon = '<small id="invalid" class="position-absolute text-danger validation-icon"><i class="fa far fa-1x fa-exclamation-circle"></i></small>';
+	valid_icon = '<small class="position-absolute text-success valid validation-icon"><i class="fa far fa-1x fa-check"></i></small>',
+	invalid_icon = '<small class="position-absolute text-danger invalid validation-icon"><i class="fa far fa-1x fa-exclamation-circle"></i></small>';
 
 function eValidRemovePad(e) {
 	$(e).css('padding-right', $(e).css('padding-left'));
@@ -27,8 +28,20 @@ function eValidAddPad(e) {
 	}
 }
 
-function clearValidation() {
-	// $('.alert').alert('close');
+jQuery.fn.clearValidation = function () {
+	let form = this;
+	$.each($(form).elements(), function () {
+		let _tagName = $(this)[0].tagName.toLowerCase(),
+			target_id = '#' + $(this).attr('id'),
+			_form_group = $(this).parents('.form-group'),
+			targetIsHidden = (($(this).prop('hidden')) || ($(this).attr('type') === 'hidden'));
+		
+		if ((_tagName === 'input' || _tagName === 'select' || _tagName === 'textarea') && !targetIsHidden)
+			removeValidationText(target_id, _form_group);
+	});
+	/*$(form).message_tag().fadeOut();*/
+	$('.alert', form).alert('close');
+	return this;
 }
 
 function onAlertClose(target) {
@@ -42,15 +55,15 @@ function removeValidationText(e, target, close = false) {
 	if (close !== false)
 		$(e + 'Valid > .alert', target).alert('close');
 	
-	$(e, target).removeClass('border-danger');
+	$(e, target).removeClass('border-danger').removeClass('border-success');
 	$('.form-group' + e + '_group .input-group > .validation-icon').fadeOut();
 	eValidRemovePad(e);
 }
 
 function addValidText(e, target, icon = false, message = null) {
 	if (icon !== false) {
-		$('.form-group' + e + '_group .input-group > #invalid').fadeOut(0);
-		$('.form-group' + e + '_group .input-group > #valid').css({right: valid_right, zIndex: 100}).fadeIn();
+		$('.form-group' + e + '_group .input-group > .invalid').fadeOut(0);
+		$('.form-group' + e + '_group .input-group > .valid').css({right: valid_right, zIndex: 100}).fadeIn();
 		eValidAddPad(e);
 	} else
 		eValidRemovePad(e)
@@ -65,8 +78,8 @@ function addValidText(e, target, icon = false, message = null) {
 function addInvalidText(e, target, icon = false, message = null) {
 	let _message = (message === null) ? 'This field is required' : message;
 	if (icon !== false) {
-		$('.form-group' + e + '_group .input-group > #valid').fadeOut(0);
-		$('.form-group' + e + '_group .input-group > #invalid').css({right: valid_right, zIndex: 100}).fadeIn();
+		$('.form-group' + e + '_group .input-group > .valid').fadeOut(0);
+		$('.form-group' + e + '_group .input-group > .invalid').css({right: valid_right, zIndex: 100}).fadeIn();
 		eValidAddPad(e);
 	} else
 		eValidRemovePad(e);
@@ -109,7 +122,7 @@ function toggleValidation(e, target, message = null, pword = false, errors = fal
 	let _target = $(e),
 		_type = (_target.attr('type') ?? '').toLowerCase(),
 		_left_padding = $(e).css('padding-left'),
-		_message = ($(e).val().length < $(e).attr('minlength') && message === null) ? 'This field requires a minimum of ' + $(e).attr('minlength') + ' characters' : message;
+		_message = _target[0].tagName.toLowerCase() !== 'select' ? ($(e).val().length < $(e).attr('minlength') && message === null ? 'This field requires a minimum of ' + $(e).attr('minlength') + ' characters' : message) : message;
 	
 	if ((_type === 'date' || _type === 'datetime' || _type === 'datetime-local')) {
 		if (_target.hasClass('form-control-sm'))
@@ -118,7 +131,7 @@ function toggleValidation(e, target, message = null, pword = false, errors = fal
 			valid_right = 'calc(' + _left_padding + ' * 3)';
 	} else {
 		if (_target[0].tagName.toLowerCase() === 'select') {
-			if (_target.hasClass('form-select-sm')) {
+			if (_target.hasClass('form-control-sm') || _target.hasClass('form-select-sm')) {
 				valid_right = 'calc(' + _left_padding + ' * 3.8)';
 				padding_right = 'calc(' + _left_padding + ' * 5.8)';
 			} else {
@@ -136,10 +149,11 @@ function toggleValidation(e, target, message = null, pword = false, errors = fal
 		}
 	}
 	
-	if (($(e).val().length < 1) || ($(e).val().length < $(e).attr('minlength')) || pword === true || errors === true)
+	if (($(_target[0].tagName.toLowerCase() !== 'select' ? e : e + ' > option:selected').val().length < 1) || ($(e).val().length < $(e).attr('minlength')) || pword === true || errors === true)
 		addInvalidText(e, target, true, _message);
 	else
 		addValidText(e, target, true);
+	onAlertClose(target);
 }
 
 function validateForm() {
@@ -206,9 +220,8 @@ function validateForm() {
 			keyup: function () {
 				let type = $(this).attr('type');
 				
-				if ((type === 'date' || type === 'datetime' || type === 'datetime-local') && target_validate !== 'no')
+				if ((type === 'date' || type === 'datetime' || type === 'datetime-local') && (target_validate !== 'no'))
 					toggleValidation(target_id, currentTarget);
-				onAlertClose(currentTarget);
 			}
 		});
 		
