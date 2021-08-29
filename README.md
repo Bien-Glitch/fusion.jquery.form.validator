@@ -1,2 +1,2 @@
-# fusion.form.validator
- Front-end Form Validation (Based on jQuery, Bootstrap, and Fontawesome)
+# jquery.form.validation
+Front-end form validation (Based on jQuery 3.x, Bootstrap 5.x and Font Awesome 6.x)
