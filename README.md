@@ -163,6 +163,20 @@ Default configuration options object:
 console.log(window.fusion.default_validator_config);
 ```
 
+The configuration options include:
+- RegExp (Regular Expression) for formatting Phone number and E-Mail Address
+- Validation options for:
+  - Native HTML Validation (*nativeValidation*)
+  - E-Mail Address (*validateEmail*)
+  - Phone Number (*validatePhone*)
+  - Password (*validatePassword*)
+  - Password field id (*passwordId*)
+  - Confirm password field id (*passwordConfirmId*)
+- Changing the default fontawesome icons used in the validation:
+  - invalid
+  - valid
+  
+
 ---
 ## About
 Fusion form validator is an easy-to-use JS plugin for front-end form validation which requires little or no knowledge of JavaScript. Read through this documentation on how to set it up, and you're ready. It's fun to use and hassle-free.\
