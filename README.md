@@ -165,10 +165,11 @@ console.log(window.fusion.default_validator_config);
 
 **The configuration options include:**
 
-- RegExp (Regular Expression) for formatting
+- Padding Multipliers - `validation_config`.
+- RegExp (Regular Expression) - `regExp_congig` - for formatting
 	- E-Mail Address - `email`
 	- Phone number - `phone`
-- Validation options for:
+- Validation options for - `Validation config`:
 	- Native HTML Validation - `nativeValidation`
 	- E-Mail Address - `validateEmail`
 	- Phone Number - `validatePhone`
