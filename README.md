@@ -167,7 +167,7 @@ The configuration options include:
 
 - RegExp (Regular Expression) for formatting Phone number and E-Mail Address
 - Validation options for:
-	- Native HTML Validation - `nativeValidation`
+	- Native HTML Validation - ```nativeValidation```
 	- E-Mail Address - `validateEmail`
 	- Phone Number - `validatePhone`
 	- Password - `validatePassword`
