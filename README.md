@@ -1,5 +1,3 @@
-[comment]: <> (# jquery.form.validation)
-
 > # Fusion Form Validator JS (*fusion.form.validator.js*)
 >Front-end form validation (Based on jQuery 3.x, Bootstrap 5.x and Font Awesome 6.x)
 
@@ -94,12 +92,11 @@ Now all you have to do is link the necessary files to your html document like th
 > ## Note:
 > **To avoid any errors:**
 > - The *fusion.form.validator.css* must come after *bootstrap\*, bootstrap-formhelpers (optional), and fontawesome**.
-> - The same goes for the *fusion.for.validator.js*, it must come after *jQuery\*, bootstrap\*, and bootstrap-formhelpers (optional)*.
-=======
-> **Note: To avoid errors;**
+> - The same goes for the *fusion.for.validator.js*, it must come after *jQuery\*, bootstrap\*, and bootstrap-formhelpers (optional)*. =======
+    > **Note: To avoid errors;**
 > - The `fusion.form.validator.css` must come after `bootstrap`, `bootstrap-formhelpers (optional)`, and `fontawesome`.
 > - The same goes for the `fusion.for.validator.js`, it must come after `jQuery`, `bootstrap`, and `bootstrap-formhelpers (optional)`.
->>>>>>> Stashed changes
+>> > > > > > Stashed changes
 
 ## Usage
 *Firstly, ensure the stylesheets and scripts are linked in the correct hierarchy as the example above. If you have problems getting it correctly, just copy the code in the example above and edit.*
