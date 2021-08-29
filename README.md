@@ -113,7 +113,7 @@ Explanation of above code:
 >
 > The last line of code - `$('form').fusionFormValidator(form_group).validateForm();` initializes the validator for every form element in the current document.
 
-For those used to coding in pure VanillaJS, The last line of the above code can be put the following way:
+For coding in pure VanillaJS, the last line of the above code can be put the following way:
 
 ```javascript
 document.querySelectorAll('form').forEach((form) => {
@@ -122,7 +122,13 @@ document.querySelectorAll('form').forEach((form) => {
 ```
 
 Note that the arrow notation `=>` used above only works in [ES6+]()\
-you'll have to use the function declaration syntax for older versions - `.forEach(function (form) { // Your code... });`
+You'll have to use the function declaration for older versions:
+
+```javascript
+document.querySelectorAll('form').forEach(function (form) {
+	new ValidateForm(form_group, form).validateForm();
+});
+```
 
 If you want to initialize it for a single form, initialize it with the forms `id`. Assuming we have a form:
 
@@ -153,25 +159,6 @@ By default, some configuration options are turned off; like `email validation`, 
 Default configuration options object:
 
 ```javascript
-/*({
-	regExp: {
-		email: /^\w+([.-]?\w+)*@\w+([.-]?\w{2,3})*(\.\w{2,3})$/gi,
-		phone: /^(\+\d{1,3}?\s)(\(\d{3}\)\s)?(\d+\s)*(\d{2,3}-?\d+)+$/g,
-	},
-	validation: {
-		nativeValidation: false,
-		passwordId: 'password',
-		passwordConfirmId: 'password_confirmation',
-		validateEmail: false,
-		validatePhone: false,
-		validatePassword: false,
-	},
-	validation_icons: {
-		invalid: '<i class="fa far fa-1x fa-exclamation-circle"></i>',
-		valid: '<i class="fa far fa-1x fa-check"></i>',
-	}
-})*/
-
 // To log the default config into your browser use:
 console.log(window.fusion.default_validator_config);
 ```
