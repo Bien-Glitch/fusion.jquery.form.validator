@@ -121,8 +121,8 @@ document.querySelectorAll('form').forEach((form) => {
 });
 ```
 
-Note that the arrow notation `=>` used above only works in [ES6+]()\
-You'll have to use the function declaration for older versions:
+Note that the arrow function `=>` used above only works in [ES6+](https://www.w3schools.com/js/js_es6.asp#mark_arrow)\
+You'll have to use the function keyword for older versions:
 
 ```javascript
 document.querySelectorAll('form').forEach(function (form) {
