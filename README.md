@@ -7,7 +7,7 @@
 [jQuery](https://github.com/jquery/jquery/releases/latest) 3.x, [Bootstrap](https://getbootstrap.com/docs/5.0/getting-started/download/) 5.x, and [Fontawesome]() 6.x are required.
 
 No worries, the above requirements are shipped along with the Fusion Form Validator package.\
-To get the latest version of Fusion Form Validator, simply head over to [Github](https://github.com/Bien-Glitch/jquery.form.validation/releases/latest) and download the assets.
+To get the latest version of Fusion Form Validator, simply head over to [Github](https://github.com/Bien-Glitch/fusion.form.validator/releases/latest) and download the assets.
 
 Once Fusion Form Validator has been downloaded, copy the files/folders in the src folder to wherever you like in the root of your Web-Project.
 
@@ -55,36 +55,36 @@ Now all you have to do is link the necessary files to your html document like th
 	
 	<!-- [Stylesheets] -->
 	<!-- Bootstrap -->
-	<link rel="stylesheet" href="./src/css/bootstrap/bootstrap.css">
+	<link rel="stylesheet" href="./css/bootstrap/bootstrap.css">
 	
 	<!-- BFH -->
 	<!--<link rel="stylesheet" href="./src/assets/bfh/css/bootstrap-formhelpers.min.css">-->
 	
 	<!-- Fontawesome -->
-	<link rel="stylesheet" href="./src/assets/fontawesome/css/all.css">
+	<link rel="stylesheet" href="./assets/fontawesome/css/all.css">
 	
 	<!-- FB-Formvalidator -->
-	<link rel="stylesheet" href="./src/css/fb-formvalidator/fusion.form.validator.css">
+	<link rel="stylesheet" href="./css/fb-formvalidator/fusion.form.validator.css">
 </head>
 <body>
 	<!-- Your content goes here -->
 </body>
 
 <!-- jQuery (core) -->
-<script src="./src/js/jquery/jquery.js"></script>
+<script src="./js/jquery/jquery.js"></script>
 
 <!-- Popper -->
-<script src="./src/js/popper/popper.js"></script>
+<script src="./js/popper/popper.js"></script>
 
 <!-- Bootstrap -->
-<script src="./src/js/bootstrap/bootstrap.js"></script>
+<script src="./js/bootstrap/bootstrap.js"></script>
 
 <!-- BFH -->
 <!--<script src="./src/assets/bfh/js/bootstrap-formhelpers.min.js"></script>-->
 
 <!-- FB-Formvalidator -->
-<script src="./src/js/fb-formvalidator/fusion.form.validator.js"></script>
-<script src="./src/js/fb-formvalidator/init.js"></script>
+<script src="./js/fb-formvalidator/fusion.form.validator.js"></script>
+<script src="./js/fb-formvalidator/init.js"></script>
 </html>
 ```
 
@@ -165,27 +165,49 @@ console.log(window.fusion.default_validator_config);
 
 **The configuration options include:**
 
-- RegExp (Regular Expression) for formatting
+- Padding Multipliers - `padding_config` - for form field element padding.
+- RegExp (Regular Expression) - `regExp_config` - for formatting:
 	- E-Mail Address - `email`
 	- Phone number - `phone`
-- Validation options for:
+- Validation - `validation_config` - options for:
 	- Native HTML Validation - `nativeValidation`
 	- E-Mail Address - `validateEmail`
 	- Phone Number - `validatePhone`
 	- Password - `validatePassword`
 	- Password field id - `passwordId`
 	- Confirm password field id - `passwordConfirmId`
-- Changing the default fontawesome icons used in the validation:
+- Changing the default fontawesome icons - `validation_icons` - used in the validation:
 	- exclamation - `invalid`
 	- check - `valid`
 
 Some helper methods are available for easier configuration options setting. They are:
 `padding_config`, `regExp_config`, `validation_config`, `validation_icons`
 
-In order to set the configuration options, initialize the validator without the `validateForm()` method and assign it to a variable. E.g.
+In order to set any configuration option, initialize the validator without the `validateForm()` method, assign it to a variable, then using the helper methods configure it.\
+The options for each configuration are key-value pairs (in an object), hence each option can be set individually or by calling the configuration and setting multiple options. E.g.
 
 ```javascript
 let valid_form = $('#valid-form').fusionFormValidator(form_group);
+
+// Setting an option individually 
+valid_form.validation_config.validateEmail = true;
+
+// Setting multiple options under a configuration
+valid_form.validation_config = {
+	validateEmail: true,
+	validatePhone: true,
+	validatePassword: true
+};
+
+// Multiple configurations can be set (i.e You can still call another configuration and set its options)
+// E.g.
+valid_form.validation_icons = {
+	valid: '<i class="fa far fa-1x fa-check-double"></i>',
+	invalid: '<i class="fa far fa-1x fa-excamation-triangle"></i>'
+}
+
+// When done with configurations, the 'validateForm()' method can now be called on the configred instance:
+valid_form.validateForm();
 ```
 
 ---

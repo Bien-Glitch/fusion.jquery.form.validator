@@ -7,4 +7,3 @@ console.log(window.fusion.default_validator_config);*/
 });*/
 
 new ValidateForm(form_group, document.getElementById('valid-form')).validateForm();
-console.log(window.fusion.default_validator_config)
