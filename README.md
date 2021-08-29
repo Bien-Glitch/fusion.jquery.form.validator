@@ -111,7 +111,7 @@ Explanation of above code:
 >
 > The second line of code - `console.log(window.fusion.default_validator_config);` logs the default configuration of the Fusion Form Validator in the browser console as an object.
 >
-> The last line of code - `$('form').fusionFormValidator(form_group).validateForm();` initializes the validator for every form element in the current document.
+> The last line of code - `$('form').fusionFormValidator(form_group).validateForm();` initializes the validator for every form element in the current document. The `validateForm()` is the method that calls the validation on the initialized validator.
 
 For coding in pure VanillaJS, the last line of the above code can be put the following way:
 
@@ -163,19 +163,34 @@ Default configuration options object:
 console.log(window.fusion.default_validator_config);
 ```
 
-The configuration options include:
+**The configuration options include:**
 
-- RegExp (Regular Expression) for formatting Phone number and E-Mail Address
+- RegExp (Regular Expression) for formatting
+	- E-Mail Address - `email`
+	- Phone number - `phone`
+
+
 - Validation options for:
-	- Native HTML Validation - ```nativeValidation```
+	- Native HTML Validation - `nativeValidation`
 	- E-Mail Address - `validateEmail`
 	- Phone Number - `validatePhone`
 	- Password - `validatePassword`
 	- Password field id - `passwordId`
 	- Confirm password field id - `passwordConfirmId`
+
+
 - Changing the default fontawesome icons used in the validation:
-	- invalid
-	- valid
+	- exclamation - `invalid`
+	- check - `valid`
+
+Some helper methods are available for easier configuration options setting. They are:
+`padding_config`, `regExp_config`, `validation_config`, `validation_icons`
+
+In order to set the configuration options, initialize the validator without the `validateForm()` method and assign it to a variable. E.g.
+
+```javascript
+let valid_form = $('#valid-form').fusionFormValidator(form_group);
+```
 
 ---
 ## About
