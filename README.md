@@ -88,11 +88,7 @@ Now all you have to do is link the necessary files to your html document like th
 </html>
 ```
 
-> ## Note:
-> **To avoid any errors:**
-> - The *fusion.form.validator.css* must come after *bootstrap\*, bootstrap-formhelpers (optional), and fontawesome**.
-> - The same goes for the *fusion.for.validator.js*, it must come after *jQuery\*, bootstrap\*, and bootstrap-formhelpers (optional)*. =======
-    > **Note: To avoid errors;**
+> **Note: To avoid errors;**
 > - The `fusion.form.validator.css` must come after `bootstrap`, `bootstrap-formhelpers (optional)`, and `fontawesome`.
 > - The same goes for the `fusion.for.validator.js`, it must come after `jQuery`, `bootstrap`, and `bootstrap-formhelpers (optional)`.
 
