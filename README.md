@@ -113,7 +113,7 @@ Explanation of above code:
 >
 > The last line of code - `$('form').fusionFormValidator(form_group).validateForm();` initializes the validator for every form element in the current document.
 
-For those used to coding in pure VanillaJS, Line 4 of the above code can be put the following way:
+For those used to coding in pure VanillaJS, The last line of the above code can be put the following way:
 
 ```javascript
 document.querySelectorAll('form').forEach((form) => {
