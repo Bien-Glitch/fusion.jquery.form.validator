@@ -4,7 +4,7 @@
 ---
 
 ## Installation
-[jQuery](https://github.com/jquery/jquery/releases/latest) 3.x, [Bootstrap](https://getbootstrap.com/docs/5.0/getting-started/download/) 5.x, and [Fontawesome]() 6.x are required.
+[jQuery](https://github.com/jquery/jquery/releases/latest) 3.x, [Bootstrap](https://getbootstrap.com/docs/5.0/getting-started/download/) 5.x, and [Fontawesome](https://fontawesome.com/v6.0) 6.x are required.
 
 No worries, the above requirements are shipped along with the Fusion Form Validator package.\
 To get the latest version of Fusion Form Validator, simply head over to [Github](https://github.com/Bien-Glitch/fusion.form.validator/releases/latest) and download the assets.

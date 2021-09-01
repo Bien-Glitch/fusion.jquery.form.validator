@@ -1,5 +1,5 @@
 /*!
-* Fusion Form Validator.js v1.0.3 (https://github.com)
+* Fusion Form Validator.js v1.0.2 (https://github.com)
 * Copyright 2021 Fusion Bolt inc.
 */
 
