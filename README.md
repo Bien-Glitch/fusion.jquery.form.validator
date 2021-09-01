@@ -211,10 +211,22 @@ valid_form.validateForm();
 ```
 
 ---
+
+## Acknowledgement
+Thanks to God Almighty for making this project a possible.\
+Also a huge thanks to Gabby White, Rozzae, Ayo, and many others for their huge support
+
+## Feedback
+If you discover a vulnerability or bug within the Fusion Form Validator, or have an improvement, please send an e-mail to Bien Nwinate via [fusionboltinc@gmail.com](mailto:fusionboltinc@gmail.com). All issues will be promptly addressed.
+
+## Contact
+
+- E-Mail: [fusionboltinc@gmail.com](mailto:fusionboltinc@gmail.com)
+- Whatsapp DM: +234 807 607 9667
+
 ## About
 Fusion form validator is an easy-to-use JS plugin for front-end form validation which requires little or no knowledge of JavaScript. Read through this documentation on how to set it up, and you're ready. It's fun to use and hassle-free.\
-Created by Bien Nwinate a.k.a. Bien-Glitch. - Founder, Fusion Bolt Inc.
+Created by Bien Nwinate a.k.a. Bien-Glitch.
 
-## Security Vulnerabilities
-If you discover a security vulnerability within Fusion Form Validator, please send an e-mail to Bien Nwinate via [fusionboltinc@gmail.com](mailto:fusionboltinc@gmail.com). All security vulnerabilities will be promptly addressed.
-
+- Team member, @Vorldline Team and Bloodzone Technologies
+- Founder, Fusion Bolt Inc.
