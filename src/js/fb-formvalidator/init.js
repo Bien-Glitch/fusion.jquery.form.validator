@@ -1,9 +1,15 @@
-/*console.log(ValidateForm.VERSION);
-console.log(window.fusion.default_validator_config);*/
+// Assign initialised validators to variables
+let form = $('#valid-form').fusionFormValidator(form_group),
+	form_v = $('#valid-form2').fusionFormValidator(form_group);
 
-/*$('form').fusionFormValidator(form_group).validateForm();*/
-/*document.querySelectorAll('form').forEach((val) => {
-	new ValidateForm(form_group, val).validateForm();
-});*/
+// Change padding for validation Icon in the second form
+form_v.padding_config = {validInput$sm: 6};
 
-new ValidateForm(form_group, document.getElementById('valid-form')).validateForm();
+// Call the 'validateForm()' method
+form.validateForm();
+form_v.validateForm();
+
+
+console.log(ValidateForm.VERSION);
+console.log(form.padding_multipliers);
+console.log(form_v.padding_multipliers);
