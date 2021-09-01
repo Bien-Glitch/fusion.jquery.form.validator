@@ -217,3 +217,4 @@ Created by Bien Nwinate a.k.a. Bien-Glitch. - Founder, Fusion Bolt Inc.
 
 ## Security Vulnerabilities
 If you discover a security vulnerability within Fusion Form Validator, please send an e-mail to Bien Nwinate via [fusionboltinc@gmail.com](mailto:fusionboltinc@gmail.com). All security vulnerabilities will be promptly addressed.
+
