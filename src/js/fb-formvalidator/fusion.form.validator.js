@@ -3,7 +3,6 @@
 * Copyright 2021 Fusion Bolt inc.
 */
 
-// TODO: form.validation.js to be deprecated in next version
 // TODO: Add option for strict validation. (i.e Restrict form submission if there are validation errors)
 
 /**
@@ -35,19 +34,8 @@ let valid_right,
 			valid: '<i class="fa far fa-1x fa-check"></i>',
 		}
 	},
-	
-	paddingMultipliers = {
-		input: '2.5',
-		input$sm: '3.5',
-		select: '4',
-		select$sm: '5.8',
-		validDate: '3',
-		validDate$sm: '3.8',
-		validInput: '0.9',
-		validInput$sm: '3 / 2',
-		validSelect: '3',
-		validSelect$sm: '3.8',
-	};
+	paddingMultipliers = [];
+
 
 /**
  * ----------------------------------------------------------
@@ -83,14 +71,31 @@ class Base {
 	constructor(element, form) {
 		this._form = form;
 		this._element = element;
-		this.#_config = default_validator_config;
+		this.#_config = {
+			regExp: {
+				email: /^\w+([.-]?\w+)*@\w+([.-]?\w{2,3})*(\.\w{2,3})$/gi,
+				phone: /^(\+\d{1,3}?\s)(\(\d{3}\)\s)?(\d+\s)*(\d{2,3}-?\d+)+$/g,
+			},
+			validation: {
+				nativeValidation: false,
+				passwordId: 'password',
+				passwordConfirmId: 'password_confirmation',
+				validateEmail: false,
+				validatePhone: false,
+				validatePassword: false,
+			},
+			validation_icons: {
+				invalid: '<i class="fa far fa-1x fa-exclamation-circle"></i>',
+				valid: '<i class="fa far fa-1x fa-check"></i>',
+			}
+		};
 		
 		this.#_invalidWrapper = (icon) => {
-			return '<small class="position-absolute text-danger invalid validation-icon">' + icon + '</small>';
+			return `<small class="position-absolute text-danger invalid validation-icon">${icon}</small>`;
 		}
 		
 		this.#_validWrapper = (icon) => {
-			return '<small class="position-absolute text-success valid validation-icon">' + icon + '</small>';
+			return `<small class="position-absolute text-success valid validation-icon">${icon}</small>`;
 		}
 	}
 	
@@ -114,12 +119,14 @@ class Base {
 		return this.#_validWrapper
 	}
 	
+	
 	/** Setters **/
 	
 	/* * *Assign the base element* * */
 	set baseElement(element) {
 		this._element = element;
 	}
+	
 	
 	/** Static **/
 	
@@ -148,7 +155,18 @@ class ValidateForm extends Base {
 		let _config = this.config;
 		
 		this.#_regExp = _config.regExp;
-		this.#_padding = paddingMultipliers;
+		this.#_padding = {
+			input: 2.5,
+			input$sm: 3.5,
+			select: 4,
+			select$sm: 5.8,
+			validDate: 3,
+			validDate$sm: 3.8,
+			validInput: 0.9,
+			validInput$sm: 1.5,
+			validSelect: 3,
+			validSelect$sm: 3.8,
+		};
 		this.#_validation = _config.validation;
 		this.#_validation_icons = _config.validation_icons;
 		this.#_invalid = this.invalidIcon;
@@ -170,23 +188,25 @@ class ValidateForm extends Base {
 			validation = this.#_validation,
 			icons = this.#_validation_icons,
 			invalidWrapper = this.#_invalid,
-			validWrapper = this.#_valid;
-		/*padding = this._padding*/
+			validWrapper = this.#_valid,
+			context = `#${form.id} ${this._element}`;
+		paddingMultipliers[form.id] = this.#_padding;
+		errorBag[form.id] = {};
+		errorCount[form.id] = 0;
 		
 		if (validation.nativeValidation)
 			$(form).removeAttr('novalidate');
 		else
 			$(form).attr({novalidate: ''});
 		
-		
-		$(this._element).each(function () {
+		$(context).each(function () {
 			let target = this,
 				element = $('input, textarea, select', target),
 				inputElement = $('input, textarea', target),
 				selectElement = $('select', target),
 				element_id = $(element).attr('id');
 			
-			$(target).attr('id', element_id + '_group');
+			$(target).attr('id', `${element_id}_group`);
 			$('.input-group', target).append(validWrapper(icons.valid)).append(invalidWrapper(icons.invalid));
 			
 			inputElement.on({
@@ -198,8 +218,8 @@ class ValidateForm extends Base {
 							inputElement.validate(target);
 						else {
 							if (_type === 'password' && validation.validatePassword) {
-								let _password_id = '#' + validation.passwordId,
-									_password_confirm_id = '#' + validation.passwordConfirmId,
+								let _password_id = `#${validation.passwordId}`,
+									_password_confirm_id = `#${validation.passwordConfirmId}`,
 									_password = $(_password_id),
 									_password_confirm = $(_password_confirm_id),
 									minlength = _password.attr('minlength'),
@@ -209,7 +229,7 @@ class ValidateForm extends Base {
 									if (inputElement.val().length < minlength || inputElement.val().length > maxlength) {
 										if ($(form).has(_password_confirm).length)
 											_password_confirm.validate(_password_confirm.parents(form_group), null, true);
-										inputElement.validate(target, 'Password must be between ' + minlength + ' and ' + maxlength + ' characters');
+										inputElement.validate(target, `Password must be between ${minlength} and ${maxlength} characters`);
 									} else {
 										if ($(form).has(_password_confirm).length)
 											if ((inputElement.val().length > 0 && _password_confirm.val().length > 0) && inputElement.val() !== _password_confirm.val()) {
@@ -228,7 +248,7 @@ class ValidateForm extends Base {
 									else {
 										if (_password.val().length < minlength || _password.val().length > maxlength) {
 											inputElement.validate(target, null, true);
-											_password.validate(_password.parents(form_group), 'Password must be between ' + minlength + ' and ' + maxlength + ' characters');
+											_password.validate(_password.parents(form_group), `Password must be between ${minlength} and ${maxlength} characters'`);
 										} else if (inputElement.val().length < 1)
 											inputElement.validate(target)
 										else if (inputElement.val() !== _password.val()) {
@@ -265,9 +285,10 @@ class ValidateForm extends Base {
 			});
 			
 			selectElement.on('change', function () {
-				toggleValidation(target);
-			})
+				$(this).validate(target);
+			});
 		});
+		
 		return this;
 	}
 	
@@ -345,7 +366,7 @@ class ValidateForm extends Base {
  * @returns {string}
  */
 function multiplyPadding(pad1, pad2) {
-	return 'calc(' + pad1 + ' * ' + pad2 + ')';
+	return `calc(${pad1} * ${pad2})`;
 }
 
 /**
@@ -360,6 +381,9 @@ function onAlertClose(context) {
 		$(_target).removeValidationText(context);
 	});
 }
+
+errorBag = {};
+errorCount = {};
 
 jQuery.fn.extend({
 	/**
@@ -395,6 +419,19 @@ jQuery.fn.extend({
 		return _target_id.match(/phone/gi);
 	},
 	/**
+	 * Checks if a form element has any validation (* When using Fusion Form Validator *) errors
+	 * @returns {Error|boolean}
+	 */
+	hasErrors() {
+		let _target = this[0];
+		
+		if (_target.tagName.toLowerCase() === 'form')
+			return errorCount[_target.id] > 0;
+		
+		console.error(`Expected 'form element' but '${_target.tagName.toLowerCase()} element' given`);
+		return new Error(`Function hasErrors() accepts only 'form element', '${_target.tagName.toLowerCase()} element' given!`);
+	},
+	/**
 	 * Close specified Validation alert
 	 * @param context
 	 * @param close
@@ -402,25 +439,29 @@ jQuery.fn.extend({
 	removeValidationText(context, close = false) {
 		let _target = this[0],
 			e = $(_target).validationProps();
+		delete errorBag[_target.form.id][_target.id];
+		errorCount[_target.form.id] = Object.keys(errorBag[_target.form.id]).length;
 		
 		if (close)
-			$(e.validField + ' > .alert', context).alert('close');
+			$(`${e.validField} > .alert`, context).alert('close');
 		
 		$(_target).removeClass('border-danger').removeClass('border-success');
 		$(e.validationIcon).fadeOut();
 		$(_target).removeValidPad();
+		
+		return _target;
 	},
 	validationProps() {
 		let target = this[0],
-			target_id = $(target).attr('id'),
-			_target_id = '#' + target_id
+			target_id = target.id,
+			_target_id = `#${target_id}`;
 		
 		return {
 			id: _target_id,
-			validField: $(_target_id + 'Valid'),
-			validIcon: $(form_group + _target_id + '_group ' + input_group + ' > .valid'),
-			invalidIcon: $(form_group + _target_id + '_group ' + input_group + ' > .invalid'),
-			validationIcon: $(form_group + _target_id + '_group ' + input_group + ' > .validation-icon')
+			validField: $(`${_target_id}Valid`),
+			validIcon: $(form_group + `${_target_id}_group ${input_group} > .valid`),
+			invalidIcon: $(form_group + `${_target_id}_group ${input_group} > .invalid`),
+			validationIcon: $(form_group + `${_target_id}_group ${input_group} > .validation-icon`)
 		}
 	},
 	/**
@@ -464,6 +505,7 @@ jQuery.fn.extend({
 	addValidText(context, message, icon = true) {
 		let _target = this[0],
 			e = $(_target).validationProps();
+		delete errorBag[_target.form.id][_target.id];
 		
 		if (icon) {
 			e.invalidIcon.fadeOut(0);
@@ -482,6 +524,7 @@ jQuery.fn.extend({
 		let _target = this[0],
 			_message = !message ? 'This field is required' : message,
 			e = $(_target).validationProps();
+		errorBag[_target.form.id][_target.id] = true;
 		
 		if (icon) {
 			e.validIcon.fadeOut(0);
@@ -498,30 +541,30 @@ jQuery.fn.extend({
 	},
 	displayMessage(bs_alert, fa_icon, message, id, context = null, dismissible = false, wait = false) {
 		let message_tag = this[0],
-			_bs_alert = dismissible ? bs_alert + ' alert-dismissible' : bs_alert,
+			_bs_alert = dismissible ? `${bs_alert} alert-dismissible` : bs_alert,
 			_message_tag = context ? $(message_tag, context) : $(message_tag),
 			_dismiss = dismissible ? '<a type="button" class="text-danger" data-bs-dismiss="alert"><i class="fa fa-times-circle"></i></a>' : '',
 			_wait = wait ? '<br><i class="fa fa-1x fa-spin fa-spinner-third"></i> Please Wait...' : '';
 		
-		_message_tag.html('\
-			<div class="alert ' + _bs_alert + ' d-flex justify-content-between align-items-center pr-0 p-1 mt-1 fade show" data-alert-id="' + id + '" role="alert">\n\
+		_message_tag.html(`\
+			<div class="alert ${_bs_alert} d-flex justify-content-between align-items-center pr-0 p-1 mt-1 fade show" data-alert-id="${id}" role="alert">\n\
 				<div class="px-1">\n\
-					<i class="fa far fa-1x ' + fa_icon + '"></i>\n\
-					<span>' + message + '</span>\n\
-					' + _wait + '\n\
+					<i class="fa far fa-1x ${fa_icon}"></i>\n\
+					<span>${message}</span>\n\
+					${_wait}\n\
 				</div>\n\
-				' + _dismiss + '\n\
+				${_dismiss}\n\
 			</div>\
-		');
+		`);
 		return this;
 	},
 	validate(context, message, password = false, errors = false) {
 		let _target = this[0],
-			_pad = paddingMultipliers,
+			_pad = paddingMultipliers[_target.form.id],
 			_type = ($(_target).attr('type') ?? '').toLowerCase(),
 			_padding_x = $(_target).css('padding-left'),
 			_min_input_length = (_target.tagName.toLowerCase() !== 'select' ? $(_target).attr('minlength') : false),
-			_message = (_min_input_length ? (($(_target).val().length < _min_input_length && !message) ? 'This field requires a minimum of ' + _min_input_length + ' characters' : message) : message);
+			_message = (_min_input_length ? (($(_target).val().length < _min_input_length && !message) ? `This field requires a minimum of ${_min_input_length} characters` : message) : message);
 		
 		if (_type === 'date' || _type === 'datetime' || _type === 'datetime-local')
 			valid_right = $(_target).hasClass('form-control-sm') ? multiplyPadding(_padding_x, _pad.validDate$sm) : multiplyPadding(_padding_x, _pad.validDate);
@@ -535,11 +578,13 @@ jQuery.fn.extend({
 			}
 		}
 		
-		if ($((_target.tagName.toLowerCase() !== 'select') ? _target : _target + ' > option:selected').val().length < 1 || $(_target).val().length < _min_input_length || password || errors)
+		if ($((_target.tagName.toLowerCase() !== 'select') ? _target : `${_target} > option:selected`).val().length < 1 || $(_target).val().length < _min_input_length || password || errors)
 			$(_target).addInvalidText(context, _message);
 		else
 			$(_target).addValidText(context);
+		errorCount[_target.form.id] = Object.keys(errorBag[_target.form.id]).length;
 		onAlertClose();
+		
 		return this;
 	},
 });

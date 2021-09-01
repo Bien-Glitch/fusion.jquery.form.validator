@@ -1,9 +1,26 @@
-/*console.log(ValidateForm.VERSION);
-console.log(window.fusion.default_validator_config);*/
+// Assign initialised validators to variables
+let form = '#valid-form',
+	form_validator = $(form).fusionFormValidator(form_group),
+	form_v = $('#valid-form2').fusionFormValidator(form_group);
 
-/*$('form').fusionFormValidator(form_group).validateForm();*/
-/*document.querySelectorAll('form').forEach((val) => {
-	new ValidateForm(form_group, val).validateForm();
-});*/
+// Change padding for validation Icon in the second form
+form_v.padding_config = {validInput$sm: 6};
+form_validator.validation_config = {validateEmail: true};
 
-new ValidateForm(form_group, document.getElementById('valid-form')).validateForm();
+// Call the 'validateForm()' method
+form_v.validateForm();
+form_validator.validateForm();
+
+$(form).on('submit', function (e) {
+	e.preventDefault();
+	
+	if (!$(this).hasErrors())
+		$(this).off('submit').submit();
+	else
+		alert('Cannot submit form while there are errors!!!');
+});
+
+/*
+console.log(ValidateForm.VERSION);
+console.log(form.padding_multipliers);
+console.log(form_v.padding_multipliers);*/
