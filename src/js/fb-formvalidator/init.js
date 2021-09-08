@@ -1,5 +1,5 @@
 // Assign initialised validators to variables
-let form = '#valid-form',
+let form = 'form',
 	form_validator = $(form).fusionFormValidator(form_group),
 	form_v = $('#valid-form2').fusionFormValidator(form_group);
 
@@ -8,7 +8,7 @@ form_v.padding_config = {validInput$sm: 6};
 form_validator.validation_config = {validateEmail: true};
 
 // Call the 'validateForm()' method
-form_v.validateForm();
+// form_v.validateForm();
 form_validator.validateForm();
 
 $(form).on('submit', function (e) {
@@ -20,6 +20,16 @@ $(form).on('submit', function (e) {
 		alert('Cannot submit form while there are errors!!!');
 });
 
+let g = document.getElementsByTagName('button');
+
+function onSubmit(evt) {
+	evt.cancelable = true
+	evt.preventDefault()
+	console.log(evt.cancelable)
+}
+
+g[0].addEventListener('click', onSubmit, false)
+/*document.getElementById('valid-form')*/
 /*
 console.log(ValidateForm.VERSION);
 console.log(form.padding_multipliers);

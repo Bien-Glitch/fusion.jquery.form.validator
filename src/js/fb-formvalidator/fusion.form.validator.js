@@ -3,8 +3,6 @@
 * Copyright 2021 Fusion Bolt inc.
 */
 
-// TODO: Add option for strict validation. (i.e Restrict form submission if there are validation errors)
-
 /**
  * ----------------------------------------------------------
  * Fusion Form Validator (v1.0.3)
@@ -183,113 +181,117 @@ class ValidateForm extends Base {
 	}
 	
 	validateForm() {
-		let form = this._form,
-			regExp = this.#_regExp,
-			validation = this.#_validation,
-			icons = this.#_validation_icons,
-			invalidWrapper = this.#_invalid,
-			validWrapper = this.#_valid,
-			context = `#${form.id} ${this._element}`;
-		paddingMultipliers[form.id] = this.#_padding;
-		errorBag[form.id] = {};
-		errorCount[form.id] = 0;
-		
-		if (validation.nativeValidation)
-			$(form).removeAttr('novalidate');
-		else
-			$(form).attr({novalidate: ''});
-		
-		$(context).each(function () {
-			let target = this,
-				element = $('input, textarea, select', target),
-				inputElement = $('input, textarea', target),
-				selectElement = $('select', target),
-				element_id = $(element).attr('id');
-			
-			$(target).attr('id', `${element_id}_group`);
-			$('.input-group', target).append(validWrapper(icons.valid)).append(invalidWrapper(icons.invalid));
-			
-			inputElement.on({
-				input: function () {
-					let _type = inputElement.attr('type');
+		if (!!this._form.length) {
+			$.each(this._form, (idx, form) => {
+				let regExp = this.#_regExp,
+					validation = this.#_validation,
+					icons = this.#_validation_icons,
+					invalidWrapper = this.#_invalid,
+					validWrapper = this.#_valid,
+					context = `#${form.id} ${this._element}`;
+				paddingMultipliers[form.id] = this.#_padding;
+				errorBag[form.id] = {};
+				errorCount[form.id] = 0;
+				
+				if (validation.nativeValidation)
+					$(form).removeAttr('novalidate');
+				else
+					$(form).attr({novalidate: ''});
+				
+				$(context).each(function () {
+					let target = this,
+						element = $('input, textarea, select', target),
+						inputElement = $('input, textarea', target),
+						selectElement = $('select', target),
+						element_id = $(element).attr('id');
 					
-					if ((_type !== 'date' && _type !== 'datetime' && _type !== 'datetime-local') && _type !== 'email' && !inputElement.isPhoneField())
-						if (_type !== 'password' && inputElement.isValidated())
-							inputElement.validate(target);
-						else {
-							if (_type === 'password' && validation.validatePassword) {
-								let _password_id = `#${validation.passwordId}`,
-									_password_confirm_id = `#${validation.passwordConfirmId}`,
-									_password = $(_password_id),
-									_password_confirm = $(_password_confirm_id),
-									minlength = _password.attr('minlength'),
-									maxlength = _password.attr('maxlength');
-								
-								if (element_id === validation.passwordId && element_id !== validation.passwordConfirmId) {
-									if (inputElement.val().length < minlength || inputElement.val().length > maxlength) {
-										if ($(form).has(_password_confirm).length)
-											_password_confirm.validate(_password_confirm.parents(form_group), null, true);
-										inputElement.validate(target, `Password must be between ${minlength} and ${maxlength} characters`);
-									} else {
-										if ($(form).has(_password_confirm).length)
-											if ((inputElement.val().length > 0 && _password_confirm.val().length > 0) && inputElement.val() !== _password_confirm.val()) {
-												inputElement.validate(target, 'Passwords do not match', true);
-												_password_confirm.validate(_password_confirm.parents(form_group), null, true);
+					$(target).attr('id', `${element_id}_group`);
+					$('.input-group', target).append(validWrapper(icons.valid)).append(invalidWrapper(icons.invalid));
+					
+					inputElement.on({
+						input: function () {
+							let _type = inputElement.attr('type');
+							
+							if ((_type !== 'date' && _type !== 'datetime' && _type !== 'datetime-local') && _type !== 'email' && !inputElement.isPhoneField())
+								if (_type !== 'password' && inputElement.isValidated())
+									inputElement.validate(target);
+								else {
+									if (_type === 'password' && validation.validatePassword) {
+										let _password_id = `#${validation.passwordId}`,
+											_password_confirm_id = `#${validation.passwordConfirmId}`,
+											_password = $(_password_id),
+											_password_confirm = $(_password_confirm_id),
+											minlength = _password.attr('minlength'),
+											maxlength = _password.attr('maxlength');
+										
+										if (element_id === validation.passwordId && element_id !== validation.passwordConfirmId) {
+											if (inputElement.val().length < minlength || inputElement.val().length > maxlength) {
+												if ($(form).has(_password_confirm).length)
+													_password_confirm.validate(_password_confirm.parents(form_group), null, true);
+												inputElement.validate(target, `Password must be between ${minlength} and ${maxlength} characters`);
 											} else {
-												inputElement.validate(target)
-												_password_confirm.validate(_password_confirm.parents(form_group))
+												if ($(form).has(_password_confirm).length)
+													if ((inputElement.val().length > 0 && _password_confirm.val().length > 0) && inputElement.val() !== _password_confirm.val()) {
+														inputElement.validate(target, 'Passwords do not match', true);
+														_password_confirm.validate(_password_confirm.parents(form_group), null, true);
+													} else {
+														inputElement.validate(target)
+														_password_confirm.validate(_password_confirm.parents(form_group))
+													}
+												else
+													inputElement.validate(target);
 											}
-										else
-											inputElement.validate(target);
-									}
-								} else {
-									if (_password.val().length < 1)
-										inputElement.validate(target, 'The Password field is required', true)
-									else {
-										if (_password.val().length < minlength || _password.val().length > maxlength) {
-											inputElement.validate(target, null, true);
-											_password.validate(_password.parents(form_group), `Password must be between ${minlength} and ${maxlength} characters'`);
-										} else if (inputElement.val().length < 1)
-											inputElement.validate(target)
-										else if (inputElement.val() !== _password.val()) {
-											inputElement.validate(target, null, true);
-											_password.validate(_password.parents(form_group), 'Passwords do not match', true);
 										} else {
-											inputElement.validate(target);
-											_password.validate(_password.parents(form_group));
+											if (_password.val().length < 1)
+												inputElement.validate(target, 'The Password field is required', true)
+											else {
+												if (_password.val().length < minlength || _password.val().length > maxlength) {
+													inputElement.validate(target, null, true);
+													_password.validate(_password.parents(form_group), `Password must be between ${minlength} and ${maxlength} characters'`);
+												} else if (inputElement.val().length < 1)
+													inputElement.validate(target)
+												else if (inputElement.val() !== _password.val()) {
+													inputElement.validate(target, null, true);
+													_password.validate(_password.parents(form_group), 'Passwords do not match', true);
+												} else {
+													inputElement.validate(target);
+													_password.validate(_password.parents(form_group));
+												}
+											}
 										}
 									}
 								}
+							
+							if (_type === 'email')
+								if (validation.validateEmail)
+									inputElement.emailValidate(regExp.email, target);
+								else
+									inputElement.validate(target);
+							
+							if (inputElement.isPhoneField())
+								if (validation.validatePhone)
+									inputElement.phoneValidate(regExp.phone, target);
+								else
+									inputElement.validate(target);
+						},
+						keyup: function () {
+							let _type = inputElement.attr('type');
+							
+							if (_type === 'date' || _type === 'datetime' || _type === 'datetime-local') {
+								inputElement.validate(target);
 							}
 						}
+					});
 					
-					if (_type === 'email')
-						if (validation.validateEmail)
-							inputElement.emailValidate(regExp.email, target);
-						else
-							inputElement.validate(target);
-					
-					if (inputElement.isPhoneField())
-						if (validation.validatePhone)
-							inputElement.phoneValidate(regExp.phone, target);
-						else
-							inputElement.validate(target);
-				},
-				keyup: function () {
-					let _type = inputElement.attr('type');
-					
-					if (_type === 'date' || _type === 'datetime' || _type === 'datetime-local') {
-						inputElement.validate(target);
-					}
-				}
+					selectElement.on('change', function () {
+						$(this).validate(target);
+					});
+				});
 			});
-			
-			selectElement.on('change', function () {
-				$(this).validate(target);
-			});
-		});
-		
-		return this;
+			return this._form;
+		} else
+			console.error(`Given form element(s) not found in current document`);
+		return new Error('Given form element(s) not found in current document');
 	}
 	
 	
@@ -392,7 +394,7 @@ jQuery.fn.extend({
 	 * @returns {ValidateForm}
 	 */
 	fusionFormValidator(element) {
-		return new ValidateForm(element, this[0]);
+		return new ValidateForm(element, this);
 	},
 	addValidPad() {
 		if ($(this[0]).attr('type') !== 'date')
