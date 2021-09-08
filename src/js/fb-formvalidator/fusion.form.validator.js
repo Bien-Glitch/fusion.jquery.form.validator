@@ -3,8 +3,6 @@
 * Copyright 2021 Fusion Bolt inc.
 */
 
-// TODO: Add option for strict validation. (i.e Restrict form submission if there are validation errors)
-
 /**
  * ----------------------------------------------------------
  * Fusion Form Validator (v1.0.3)
